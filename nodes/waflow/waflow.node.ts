@@ -6,19 +6,29 @@ import type {
 } from 'n8n-workflow';
 import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
-export class waflow implements INodeType {
+export class WaFlow implements INodeType { 
 	description: INodeTypeDescription = {
 		displayName: 'WaFloW',
-		name: 'automation.waflow.ai',
-		icon: { light: 'file:waflow-comunity-node-n8n/nodes/Example/example.dark.svg waflow-comunity-node-n8n/nodes/Example/Example.node.json waflow-comunity-node-n8n/nodes/Example/Example.node.ts waflow-comunity-node-n8n/nodes/Example/example.svg', dark: 'file:waflow-comunity-node-n8n/nodes/Example/example.dark.svg waflow-comunity-node-n8n/nodes/Example/Example.node.json waflow-comunity-node-n8n/nodes/Example/Example.node.ts waflow-comunity-node-n8n/nodes/Example/example.svg' },
+		name: 'waFlow', // Recomendado: usar camelCase para el nombre técnico
+		icon: { light: 'file:waflow.svg', dark: 'file:waflow.dark.svg' },
 		group: ['input'],
 		version: 1,
-		description: 'Basic Example Node',
+		description: 'WaFloW.ai Integration',
 		defaults: {
-			name: 'Example',
+			name: 'WaFloW',
 		},
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
+		
+		// --- AGREGAR ESTO ---
+		credentials: [
+			{
+				name: 'waFlowAiApi', // Debe coincidir con el 'name' en el archivo .credentials.ts
+				required: true,
+			},
+		],
+		// --------------------
+
 		usableAsTool: true,
 		properties: [
 			// Node properties which the user gets displayed and
