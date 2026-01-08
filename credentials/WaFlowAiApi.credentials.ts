@@ -3,12 +3,18 @@ import type {
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
+    Icon,
 } from 'n8n-workflow';
 
 export class WaFlowAiApi implements ICredentialType {
 	name = 'waFlowAiApi'; // Nombre interno único
 	displayName = 'WaFloW.ai API'; // Nombre que verá el usuario
 	documentationUrl = 'https://waflow.ai'; // Enlace a la doc (opcional)
+
+    icon: Icon = { 
+		light: 'file:../nodes/waflow/waflow.svg', 
+		dark: 'file:../nodes/waflow/waflow.dark.svg' 
+	};
 
 	// Definición de los campos que pedirá el formulario
 	properties: INodeProperties[] = [
