@@ -21,20 +21,21 @@ export class WaFlowAiApi implements ICredentialType {
 			required: true,
 		},
 		{
-			displayName: 'Subaccount ID',
+			displayName: 'Agencyid/Locationid',
 			name: 'subaccountId',
 			type: 'string',
 			default: '',
 			required: true,
 		},
 		{
-			displayName: 'Allowed HTTP Request Domains',
-			name: 'allowedDomains',
+			displayName: 'Base URL',
+			name: 'baseUrl',
 			type: 'string',
-			default: '',
-			placeholder: 'e.g. api.waflow.ai',
-			description: 'Comma separated list of allowed domains',
-		},
+			default: 'https://api.waflow.ai',
+			placeholder: 'http://localhost:3000',
+			description: 'The base URL of your WaFloW.ai installation',
+			required: true,
+		}
 	];
 
 	// Cómo se usan estas credenciales en las llamadas HTTP
@@ -42,9 +43,7 @@ export class WaFlowAiApi implements ICredentialType {
 		type: 'generic',
 		properties: {
 			headers: {
-				// Ejemplo: Authorization: Bearer <API_KEY>
 				Authorization: '=Bearer {{$credentials.apiKey}}',
-				// Ejemplo: X-Subaccount-Id: <SUBACCOUNT_ID>
 				'X-Subaccount-Id': '={{$credentials.subaccountId}}',
 			},
 		},
@@ -53,8 +52,8 @@ export class WaFlowAiApi implements ICredentialType {
 	// (Opcional) Configuración para el botón "Test Connection"
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://api.waflow.ai', // Ajusta esto a la URL real
-			url: '/user/me', // Ajusta a un endpoint de prueba real
+			baseURL: '={{$credentials.baseUrl}}',
+			url: '/agency/api-keys', // Valid endpoint we just created
 			method: 'GET',
 		},
 	};

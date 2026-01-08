@@ -1,88 +1,79 @@
 import type {
-	IExecuteFunctions,
-	INodeExecutionData,
+	IWebhookFunctions,
 	INodeType,
 	INodeTypeDescription,
+	IWebhookResponseData,
+	INodeExecutionData,
 } from 'n8n-workflow';
-import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 
-export class WaFlow implements INodeType { 
+export class WaFlow implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'WaFloW',
-		name: 'waFlow', // Recomendado: usar camelCase para el nombre técnico
+		displayName: 'WaFloW Trigger',
+		name: 'waFlow',
 		icon: { light: 'file:waflow.svg', dark: 'file:waflow.dark.svg' },
-		group: ['input'],
+		group: ['trigger'],
 		version: 1,
-		description: 'WaFloW.ai Integration',
+		description: 'Starts the workflow when a WaFlow event occurs',
 		defaults: {
-			name: 'WaFloW',
+			name: 'WaFloW Trigger',
 		},
-		inputs: [NodeConnectionTypes.Main],
+		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
-		
-		// --- AGREGAR ESTO ---
 		credentials: [
 			{
-				name: 'waFlowAiApi', // Debe coincidir con el 'name' en el archivo .credentials.ts
+				name: 'waFlowAiApi',
 				required: true,
 			},
 		],
-		// --------------------
-
-		usableAsTool: true,
-		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
+		webhooks: [
 			{
-				displayName: 'My String',
-				name: 'myString',
-				type: 'string',
-				default: '',
-				placeholder: 'Placeholder value',
-				description: 'The description text',
+				name: 'default',
+				httpMethod: 'POST',
+				responseMode: 'onReceived',
+				path: 'webhook',
+			},
+		],
+		properties: [
+			{
+				displayName: 'Event',
+				name: 'event',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{
+						name: 'WhatsApp Inbound Message',
+						value: 'whatsapp inbound message',
+					},
+					{
+						name: 'WhatsApp Outbound Message',
+						value: 'whatsapp outbound message',
+					},
+				],
+				default: 'whatsapp inbound message',
+				description: 'The event that triggers the workflow',
 			},
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
-	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-		const items = this.getInputData();
+	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
+		const bodyData = this.getBodyData();
+		const selectedEvent = this.getNodeParameter('event') as string;
 
-		let item: INodeExecutionData;
-		let myString: string;
-
-		// Iterates over all input items and add the key "myString" with the
-		// value the parameter "myString" resolves to.
-		// (This could be a different value for each item in case it contains an expression)
-		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
-			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
-				item = items[itemIndex];
-
-				item.json.myString = myString;
-			} catch (error) {
-				// This node should never fail but we want to showcase how
-				// to handle errors.
-				if (this.continueOnFail()) {
-					items.push({ json: this.getInputData(itemIndex)[0].json, error, pairedItem: itemIndex });
-				} else {
-					// Adding `itemIndex` allows other workflows to handle this error
-					if (error.context) {
-						// If the error thrown already contains the context property,
-						// only append the itemIndex
-						error.context.itemIndex = itemIndex;
-						throw error;
-					}
-					throw new NodeOperationError(this.getNode(), error, {
-						itemIndex,
-					});
-				}
-			}
+		// Filter by event type if the payload contains it
+		if (bodyData.event && bodyData.event !== selectedEvent) {
+			return {};
 		}
 
-		return [items];
+		// Structure return data for n8n
+		const returnData: INodeExecutionData[] = [
+			{
+				json: bodyData,
+			}
+		];
+
+		return {
+			workflowData: [returnData],
+		};
 	}
 }

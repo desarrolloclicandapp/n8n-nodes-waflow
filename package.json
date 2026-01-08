@@ -37,7 +37,7 @@
 		],
 		"nodes": [
 			"dist/nodes/GithubIssues/GithubIssues.node.js",
-			"dist/nodes/waflow/waflow.node.js"
+			"dist/nodes/waflow/WaFlow.node.js"
 		]
 	},
 	"devDependencies": {
