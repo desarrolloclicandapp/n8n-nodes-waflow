@@ -5,7 +5,7 @@ import type {
 	IWebhookResponseData,
 	INodeExecutionData,
 } from 'n8n-workflow';
-import { NodeConnectionTypes } from 'n8n-workflow';
+
 
 export class WaFlow implements INodeType {
 	description: INodeTypeDescription = {
@@ -19,7 +19,7 @@ export class WaFlow implements INodeType {
 			name: 'WaFloW Trigger',
 		},
 		inputs: [],
-		outputs: [NodeConnectionTypes.Main],
+		outputs: ['main'],
 		credentials: [
 			{
 				name: 'waFlowAiApi',
