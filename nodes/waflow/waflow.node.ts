@@ -54,7 +54,6 @@ export class WaFlow implements INodeType {
 				description: 'The event that triggers the workflow',
 			},
 		],
-		usableAsTool: true,
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
