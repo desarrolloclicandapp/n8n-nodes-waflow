@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-waflow",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n node to integrate with WaFloW.ai WhatsApp services",
 	"license": "MIT",
 	"homepage": "",
@@ -27,16 +27,16 @@
 	"files": [
 		"dist"
 	],
-"n8n": {
-    "n8nNodesApiVersion": 1,
-    "strict": true,
-    "credentials": [
-        "dist/credentials/WaFlowAiApi.credentials.js"
-    ],
-    "nodes": [
-        "dist/nodes/waflow/WaFlow.node.js"
-    ]
-},
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/WaFlowAiApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/waflow/WaFlow.node.js"
+		]
+	},
 	"devDependencies": {
 		"@n8n/node-cli": "*",
 		"eslint": "9.32.0",
