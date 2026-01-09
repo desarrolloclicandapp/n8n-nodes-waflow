@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import type {
 	IWebhookFunctions,
 	INodeType,
@@ -15,6 +16,7 @@ export class WaFlow implements INodeType {
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts the workflow when a WaFlow event occurs',
+		usableAsTool: true,
 		defaults: {
 			name: 'WaFloW Trigger',
 		},
