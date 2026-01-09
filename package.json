@@ -34,7 +34,7 @@
 			"dist/credentials/WaFlowAiApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/waflow/WaFlow.node.js"
+			"dist/nodes/waflow/waflow.node.js"
 		]
 	},
 	"devDependencies": {
